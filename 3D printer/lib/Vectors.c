@@ -1,9 +1,15 @@
-#include <Vectors.h>
+#include "Vectors.h"
+#include <math.h>
 
 Vector normalizeVector(Vector move){
-	float sq = 1/sqrt(pow(move.x,2)+pow(move.y,2)+pow(move.z,2));
-	return MultiplayVectorConstant(move,sq);
+	return VectorScale(move,1/VectorLength(move));
 }
+
+float VectorLength(Vector move){
+	return sqrt(pow(move.x,2)+pow(move.y,2)+pow(move.z,2));
+}
+
+
 
 Vector MultiplayVectors(Vector first,Vector second){
 	Vector normie;
@@ -13,7 +19,7 @@ Vector MultiplayVectors(Vector first,Vector second){
 	return normie;
 }
 
-Vector VectorScale(Vector first, int constant){
+Vector VectorScale(Vector first, double constant){
 	Vector normie;
 	normie.x = first.x*constant;
 	normie.y = first.y*constant;
@@ -42,5 +48,13 @@ Vector DivideConstantVector(int constant,Vector first){
 	normie.x = constant/first.x;
 	normie.y = constant/first.y;
 	normie.z = constant/first.z;
+	return normie;
+}
+
+Vector ONLYPOSITIVEVECTOR(Vector norm){
+	Vector normie;
+	normie.x = norm.x >=0 ? norm.x : -norm.x;
+	normie.y = norm.y >=0 ? norm.y : -norm.y;
+	normie.z = norm.z >=0 ? norm.z : -norm.z;
 	return normie;
 }

@@ -9,18 +9,24 @@
 #ifndef VECTORS_H_
 #define VECTORS_H_
 
-typedef struct {
+typedef struct Vector{
 	double x, y, z;
 } Vector;
 
-Vector normalizeVector(Vector move)
+Vector normalizeVector(Vector move);
 
-Vector MultiplayVectors(Vector first,Vector second)
+float VectorLength(Vector move)
 
-Vector VectorScale(Vector first, int constant)
+Vector MultiplayVectors(Vector first,Vector second);
 
-Vector VectorDivideVector(Vector first,Vector second)
+Vector VectorScale(Vector first, double constant);
 
-Vector DivideConstantVector(int constant,Vector first)
+Vector VectorDivideVector(Vector first,Vector second);
+
+Vector VectorDivideConstant(Vector first,double second);
+
+Vector DivideConstantVector(int constant,Vector vec);
+
+Vector ONLYPOSITIVEVECTOR(Vector vec);
 
 #endif /* VECTORS_H_ */

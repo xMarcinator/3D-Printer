@@ -122,7 +122,22 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="lib\axis.c">
+    <Compile Include="lib\Commander.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\Commander.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\Endstops.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\Endstops.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\Extruder.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\Extruder.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="lib\Movement.c">
