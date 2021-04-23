@@ -8,12 +8,13 @@
 
 #ifndef ENDSTOPS_H_
 #define ENDSTOPS_H_
+#include <stdbool.h>
 
-void pendEnstops()
+void pendEnstops();
 
-bool ReachedEnstops()
+bool ReachedEnstops();
 
-void initEndstops()
+void initEndstops();
 
 
 #endif /* ENDSTOPS_H_ */

@@ -46,14 +46,15 @@ int main(void)
 	initCommander();
 	
 	Vector toMove;
-	toMove.x = 100;
-	toMove.y = 100;
+	toMove.x = -4;
+	toMove.y = 2;
 	toMove.z = 0;	
 	
 	//toMove = 10000;
 	//
 	//FOO();
-	moveLinear(toMove);
+	moveLinear(toMove,10);
+
 	//OCR1A = 1000;
 	
     while (1) {

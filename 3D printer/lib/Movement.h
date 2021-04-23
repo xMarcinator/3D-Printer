@@ -10,7 +10,7 @@
 #ifndef MOVEMENT_H_
 #define MOVEMENT_H_
 void initMovement();
-void setToMove(Vector movement)
+void setToMove(Vector movement);
 
 
 #endif /* MOVEMENT_H_ */

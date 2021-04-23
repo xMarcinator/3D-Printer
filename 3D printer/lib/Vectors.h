@@ -15,7 +15,13 @@ typedef struct Vector{
 
 Vector normalizeVector(Vector move);
 
-float VectorLength(Vector move)
+float VectorLength(Vector move);
+
+Vector ReluVectors(Vector first);
+
+Vector AddVectors(Vector first,Vector second);
+
+Vector SubVectors(Vector first,Vector second);
 
 Vector MultiplayVectors(Vector first,Vector second);
 

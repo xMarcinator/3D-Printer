@@ -20,7 +20,7 @@
 #define eSteps 200 
 #define eMicro 16
 #define eScaler 64
-#define eSpeed F_CPU * eRotation /(eSteps*eMicro*eScaler)
+#define eTiming F_CPU * eRotation /(eSteps*eMicro*eScaler)
 
 void setExtruderSpeed(unsigned char Distance, unsigned char Speed, unsigned char Filament);
 

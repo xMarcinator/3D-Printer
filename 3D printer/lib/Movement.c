@@ -1,7 +1,4 @@
-#define xSpeed 20000;
-#define ySpeed 20000;
-#define zSpeed 20000;
-#define eSpeed 20000;
+
 
 #define prescaler 0b11;
 
@@ -9,26 +6,24 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-const int speed = 2000;
-
 Vector ToMove;
 Vector MoveCounter;
-Vector speeds;
 
 #pragma region interrupts
 
 #pragma endregion interrupts
 
 void enableSteppers(){
-	DDRD |= 1<<7; //x stepper enable
+	/*DDRD |= 1<<7; //x stepper enable
 	DDRF |= 1<<2; //y stepper enable
 	DDRF |= 1<<8; //z stepper enable
-	DDRA |= 1<<2; //e stepper enable
+	DDRA |= 1<<2; //e stepper enable*/
+	DDRK = 0b1111<<4; // træk enable pins i nul.	
 }
 
 #pragma region xAxis
-#define XDIR 1
-#define XSTEP 0	
+#define XDIR 0
+#define XSTEP 2	
 
 void initXAxis(){
 	// CTC
@@ -38,16 +33,16 @@ void initXAxis(){
 	// Output Compare Match A Interrupt Enable
 	TIMSK1 |= (1 << OCIE1A);
 	
-	DDRF |= (1<<XDIR) | (1<<XSTEP);
+	DDRA |= (1<<XDIR) | (1<<XSTEP);
 	/* Replace with your application code */
-	PORTF |= (1<<XDIR);
+	PORTA |= (1<<XDIR);
 }
 
 ISR(TIMER1_COMPA_vect)
 {
-	PORTF ^= (1<<XSTEP);
+	PORTA ^= (1<<XSTEP);
 	
-	if(PORTF & (1<<XSTEP)){
+	if(PORTA & (1<<XSTEP)){
 		ToMove.x -= 0.00125;
 		if(ToMove.x <= 0.000625){
 			TIMSK1 &= ~(1<<OCIE1A); //stop interupt
@@ -56,18 +51,21 @@ ISR(TIMER1_COMPA_vect)
 }
 
 void setXAxisSpeed(double speed){
-	OCR1A = (unsigned char) speed;
-	
-	unsigned char bit = (speed<0);
+	if(speed != 0){
+		OCR1A = (unsigned short)(speed<0 ? -1*speed : speed);
+		
+		unsigned char bit = 0;
 
-	PORTF = (PORTF&(~(1&(~bit))<<XDIR)) | bit<<XDIR;
+		PORTA = (PORTA&(~(1&(~bit))<<XDIR)) | bit<<XDIR;
+		//PORTF = (PORTF & (~(1<<XDIR))) | bit<<XDIR;
 	
-	TIMSK1 |= (1<<OCIE1A);
+		TIMSK1 |= (1<<OCIE1A);
+	}
 }
 #pragma endregion xAxis
 
 #pragma region yAxis
-#define YDIR 7
+#define YDIR 4
 #define YSTEP 6
 
 void initYAxis(){
@@ -78,25 +76,25 @@ void initYAxis(){
 	// Output Compare Match A Interrupt Enable
 	TIMSK3 |= (1 << OCIE3A);
 	
-	DDRF |= (1<<YDIR) | (1<<YSTEP);
+	DDRA |= (1<<YDIR) | (1<<YSTEP);
 	/* Replace with your application code */
-	PORTF |= 1<<YDIR;
+	PORTA |= 1<<YDIR;
 }
 
-ISR(TIMER3_COMPA_vect)
+ISR(TIMER3_COMPA_vect)	
 {
-	PORTF ^= (1<<YSTEP);
+	PORTA ^= (1<<YSTEP);
 	
-	if(PORTF & (1<<YSTEP)){
-		ToMove.x -= 0.00125;
-		if(ToMove.x <= 0.000625){
+	if(PORTA & (1<<YSTEP)){
+		ToMove.y -= 0.00125;
+		if(ToMove.y <= 0.000625){
 			TIMSK3 &= ~(1<<OCIE3A); //stop interupt
 		}
 	}
 }
 
 void setYAxisSpeed(double speed){
-	OCR3A = speed;
+	OCR3A = (unsigned short)(speed<0 ? -1*speed : speed);
 	
 	unsigned char bit = (speed<0);
 
@@ -107,8 +105,8 @@ void setYAxisSpeed(double speed){
 #pragma endregion yAxis
 
 #pragma region zAxis
-#define ZDIR 3
-#define ZSTEP 1	
+#define ZDIR 7
+#define ZSTEP 5
 
 void initZAxis(){
 	// CTC
@@ -118,57 +116,57 @@ void initZAxis(){
 	// Output Compare Match A Interrupt Enable
 	TIMSK4 |= (1 << OCIE4A);
 	
-	DDRL |= (1<<ZDIR) | (1<<ZSTEP);
+	DDRC |= (1<<ZDIR) | (1<<ZSTEP);
 	/* Replace with your application code */
-	PORTL |= 1<<ZDIR;
+	PORTC |= 1<<ZDIR;
 }
 
 ISR(TIMER4_COMPA_vect)
 {
-	PORTL ^= (1<<ZSTEP);
+	PORTC ^= (1<<ZSTEP);
 	
-	if(PORTL & (1<<ZSTEP)){
-		ToMove.x -= 0.00125;
-		if(ToMove.x <= 0.000625){
+	if(PORTC & (1<<ZSTEP)){
+		ToMove.z -= 0.00125;
+		if(ToMove.z <= 0.000625){
 			TIMSK4 &= ~(1<<OCIE4A); //stop interupt
 		}
 	}
 }
 
 void setZAxisSpeed(double speed){
-	OCR4C = speed;
+	OCR4C = (unsigned short)(speed<0 ? -1*speed : speed);
 	
 	unsigned char bit = (speed<0);
 		
-	PORTL = (PORTL&(~(1&(~bit))<<ZDIR)) | bit<<ZDIR;
+	PORTC = (PORTC&(~(1&(~bit))<<ZDIR)) | bit<<ZDIR;
 	
 	TIMSK4 |= (1<<OCIE4A);
 }
 #pragma endregion zAxis
 
-void setAxisSpeed(unsigned char target,double speed){
-	uint8_t* OCR;
-	uint8_t* PORT;
-	uint8_t* TIMSK;
+void setAxisSpeed2(unsigned char target,double speed){
+	unsigned char* OCR;
+	unsigned char* PORT;
+	unsigned char* TIMSK;
 	unsigned char DIR;
 	
 	switch (target)
 	{
 		case 4:{
-			OCR = &OCR5C
-			PORT = &PORTB
-			TIMSK = &TIMSK4
+			OCR = &OCR5C;
+			PORT = &PORTB;
+			TIMSK = &TIMSK4;
 			DIR = ZDIR;
 		}
 	}
 	
-	OCR = speed;
+	OCR = (unsigned char)speed;
 	
 	unsigned char bit = (speed<0);
 	
-	PORT = (PORT&(~(1&(~bit))<<DIR)) | bit<<DIR;
+	PORT = (*PORT&(~(1&(~bit))<<DIR)) | bit<<DIR;
 	
-	TIMSK |= (1<<OCIE1A);
+	TIMSK = *TIMSK|(1<<OCIE1A);
 }
 
 #pragma region axis
@@ -181,10 +179,6 @@ void setAxisSpeed(Vector speed){
 
 #pragma region Globals
 void initMovement(){
-	speeds.x = xSpeed;
-	speeds.y = ySpeed;
-	speeds.z = zSpeed;
-	
 	sei();
 	initXAxis();
 	initYAxis();

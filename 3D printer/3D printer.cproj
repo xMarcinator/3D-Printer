@@ -140,10 +140,19 @@
     <Compile Include="lib\Extruder.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="lib\heater.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="lib\Movement.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="lib\Movement.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\utils\millis.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\utils\millis.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="lib\Vectors.c">
@@ -158,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lib" />
+    <Folder Include="lib\utils" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
