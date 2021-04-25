@@ -1,9 +1,13 @@
-/*
- * millis.c
- *
- * Created: 4/21/2021 1:56:32 PM
- *  Author: Marc
- */ 
+/* 
+The millis() function known from Arduino
+Calling millis() will return the milliseconds since the program started
+Tested on atmega328p
+Using content from http://www.adnbr.co.uk/articles/counting-milliseconds
+Author: Monoclecat, https://github.com/monoclecat/avr-millis-function
+REMEMBER: Add sei(); after init_millis() to enable global interrupts!
+Link to code: https://github.com/monoclecat/avr-millis-function/blob/master/millis.c
+ */
+
 #include <avr/io.h>
 #include <util/atomic.h>
 #include <avr/interrupt.h>

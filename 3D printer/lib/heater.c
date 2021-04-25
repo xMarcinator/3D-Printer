@@ -10,13 +10,13 @@
 
 unsigned char dutyCycle[2];
 void initHeater(){
-	//PWM
-	TCCR2A = (1 << COM2A1) | (1 << COM2B1) | (1 << WGM20) | (1 << WGM21); // set mode and set compare match mode;
+	//
+	TCCR2A = (1 << COM2A1) | (1 << COM2B1) | (1 << WGM20) | (1 << WGM21); // set mode til pwm og sla OC1A og OC1B til
 	TCCR2B = (1 << CS00) | (1 << CS02); // set prescaler
 	TIMSK2 = (1 << TOIE0); //enable timer interrupt
 	
-	OCR2A = dutyCycle[0]*2.55;
-	OCR2B = dutyCycle[1]*2.55;
+	OCR2A = dutyCycle[0]*2.55;//set duty cycle
+	OCR2B = dutyCycle[1]*2.55;//set duty cycle
 }
 
 ISR(TIMER0_OVF_vect)

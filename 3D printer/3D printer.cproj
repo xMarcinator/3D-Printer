@@ -143,6 +143,9 @@
     <Compile Include="lib\heater.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="lib\heater.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="lib\Movement.c">
       <SubType>compile</SubType>
     </Compile>
